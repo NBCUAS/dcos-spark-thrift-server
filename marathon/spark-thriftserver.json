@@ -1,0 +1,49 @@
+{
+  "id": "/spark-thriftserver-test",
+  "cmd": "/opt/spark/dist/sbin/start-thriftserver.sh --master mesos://leader.mesos:5050 --executor-memory ${SPARK_EXECUTOR_MEMORY} --driver-memory ${SPARK_DRIVER_MEMORY} --conf spark.shuffle.service.enabled=true --conf spark.network.timeout=10s --conf spark.shuffle.io.connectionTimeout=10s --conf spark.ui.showConsoleProgress=false --conf spark.cores.max=${SPARK_CORES_MAX} --conf spark.executor.cores=${SPARK_EXECUTOR_CORES} --conf spark.mesos.extra.cores=${SPARK_MESOS_EXTRA_CORES} --conf spark.dynamicAllocation.enabled=true --conf spark.dynamicAllocation.maxExecutors=${SPARK_MAX_EXECUTORS} --conf spark.local.dir=/tmp/spark --conf spark.mesos.coarse=true --conf spark.mesos.executor.docker.volumes=/var/lib/tmp/spark:/tmp/spark:rw --conf spark.mesos.executor.docker.image=${SPARK_EXECUTOR_DOCKER_IMAGE} --conf spark.mesos.executor.docker.forcePullImage=true --conf spark.executor.home=/opt/spark/dist && find /opt/spark/dist/logs/ -name 'spark--org.apache.spark.sql.hive.thriftserver.*.out' -exec tail -f {} \\;",
+  "instances": 1,
+  "cpus": 1,
+  "mem": 4096,
+  "disk": 0,
+  "gpus": 0,
+  "env": {
+    "HIVE_SERVER2_THRIFT_PORT": "9000",
+    "SPARK_EXECUTOR_DOCKER_IMAGE": "mesosphere/spark:1.0.8-2.1.0-1-hadoop-2.7",
+    "SPARK_EXECUTOR_MEMORY": "8g",
+    "SPARK_DRIVER_MEMORY": "4g",
+    "SPARK_CORES_MAX": "160",
+    "SPARK_EXECUTOR_CORES": "2",
+    "SPARK_MESOS_EXTRA_CORES": "2",
+    "SPARK_MAX_EXECUTORS": "100"
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "mesosphere/spark:1.0.8-2.1.0-1-hadoop-2.7",
+      "network": "HOST",
+      "forcePullImage": true
+    },
+    "volumes": [
+      {
+        "containerPath": "/tmp/spark",
+        "hostPath": "/var/lib/tmp/spark",
+        "mode": "RW"
+      }
+    ]
+  },
+  "healthChecks": [
+    {
+      "protocol": "TCP",
+      "gracePeriodSeconds": 10,
+      "intervalSeconds": 10,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3,
+      "port": 9000,
+      "portType": "PORT_NUMBER"
+    }
+  ],
+  "portDefinitions": [
+    { "port": 9000, "protocol": "tcp", "name": "spark-thriftserver" }
+  ],
+  "requirePorts": true
+}
