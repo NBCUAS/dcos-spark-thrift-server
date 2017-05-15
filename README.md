@@ -32,6 +32,7 @@ To use dynamic allocation, you need to have [Spark Shuffle Service](https://gith
 You will see the following Spark options set in the marathon configuration file which enable dynamic allocation and properly work with external shuffle service:
 
 | Config                                | Value |
+| ------------------------------------- | ----- |
 | spark.shuffle.service.enabled         | true  |
 | spark.dynamicAllocation.enabled       | true  |
 | spark.local.dir	                    | /tmp/spark |
@@ -42,6 +43,7 @@ You will see the following Spark options set in the marathon configuration file 
 Some other options are set via environment variables and can be changed as needed:
 
 | Config                                | Value |      
+| ------------------------------------- | ----- |
 | executor-memory                       | 8g    |
 | driver-memory                         | 4g    |
 | spark.cores.max                       | 160   |
