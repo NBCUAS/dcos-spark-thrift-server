@@ -1,6 +1,7 @@
 # Spark Thrift Server
 
-JDBC/ODBC access to Spark in DC/OS
+[Spark Thrift Server](http://spark.apache.org/docs/latest/sql-programming-guide.html#running-the-thrift-jdbcodbc-server) provides JDBC/ODBC access to Spark in DC/OS. This is very useful, as it allows you to access and manipulate your data by leverage the power of Spark from any tool that supports JDBC/ODBC interface.
+This includes clients, such as DBEaver, beeline, as well as BI tools, such as Tableau, Pentaho, etc.
 
 ## WARNING: External Volume
 
@@ -18,9 +19,12 @@ Run these commands:
 > dcos marathon app add < spark-thriftserver.json
 ```
 
-## Dynamic allocation
+See [spark-thriftserver.json](https://github.com/NBCUAS/dcos-spark-thrift-server/blob/master/marathon/spark-thriftserver.json)
+for full Marathon configuration file
 
-The marathon configuration of the Spark Thrift Service is setup to use dynamic allocation. You will, therefore, see the following options set:
+## Spark Properties
+
+The marathon configuration of the Spark Thrift Service is setup to use [dynamic allocation](http://spark.apache.org/docs/latest/configuration.html#dynamic-allocation). You will, therefore, see the following options set:
 
 | Config                                | Value |
 | ------------------------------------- |-------|
@@ -29,7 +33,7 @@ The marathon configuration of the Spark Thrift Service is setup to use dynamic a
 | spark.local.dir	                    | /tmp/spark |
 | spark.mesos.executor.docker.volumes	| /var/lib/tmp/spark:/tmp/spark:rw |
 
-The following options are set via environment variables and can be changed as needed:
+Some other options are set via environment variables and can be changed as needed:
 
 | Config                                | Value |      
 | ------------------------------------- |-------|
@@ -40,33 +44,9 @@ The following options are set via environment variables and can be changed as ne
 | spark.mesos.extra.cores               | 2     |
 | spark.dynamicAllocation.maxExecutors  | 100   |
 
-## Example
+## Connecting to JDBC/ODBC Server
 
+Once you have the server running, you can connect to it with your favorite client. Here, we are using [beeline JDBC client](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-Beeline–CommandLineShell)
 ```
 docker run --rm -ti --net=host --entrypoint=./beeline.sh sutoiku/beeline:hive-1.2.0 -u jdbc:hive2://spark-thriftserver.marathon.mesos:9000/default
-```
-
-```
-CREATE TABLE experian
-  USING org.apache.spark.sql.parquet
-  OPTIONS (path "s3a://nbcuas-audience-graph/experian_data/201704240600");
-
-CREATE TABLE polk
-  USING org.apache.spark.sql.parquet
-  OPTIONS (path "s3a://nbcuas-audience-graph/polk_data/201704240600");
-
-CREATE TABLE latest_classifier
-  USING org.apache.spark.sql.parquet
-  OPTIONS (path "s3a://nbcuas-audience-graph/classifier_data/201704210645");
-
-SHOW TABLES;
-
-SELECT * from latest_classifier LIMIT 10;
-
-SELECT count(1) FROM experian e, polk p
-  WHERE  ((e.Person1Surname = p.HHLDNM) OR (e.Person2Surname = p.HHLDNM))
-    AND e.ZipCode = p.ZIPCD
-    AND e.Zip4 = p.ZPPLS4
-    AND concat(e.PrimaryAddress, ' ', e.SecondaryAddress) = p.ADDRESS;
-    
 ```
