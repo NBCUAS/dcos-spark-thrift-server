@@ -21,28 +21,27 @@ Run these commands:
 > dcos marathon app add < spark-thriftserver.json
 ```
 
-See [spark-thriftserver.json](https://github.com/NBCUAS/dcos-spark-thrift-server/blob/master/marathon/spark-thriftserver.json)
-for full Marathon configuration file
+See [spark-thriftserver.json](marathon/spark-thriftserver.json) for full Marathon configuration file
 
 ## Dynamic Allocation
 
 This marathon configuration of the Spark Thrift Service is setup to use 
 [dynamic allocation](http://spark.apache.org/docs/latest/configuration.html#dynamic-allocation). 
-To use dynamic allocation, you need to have [Spark Shuffle Service](https://github.com/NBCUAS/dcos-spark-shuffle-service) runnin. 
+To use dynamic allocation, you need to have [Spark Shuffle Service](https://github.com/NBCUAS/dcos-spark-shuffle-service) running. 
 You will see the following Spark options set in the marathon configuration file which enable dynamic allocation and properly work with external shuffle service:
 
-| Config                                | Value |
+| Property                              | Value |
 | ------------------------------------- | ----- |
 | spark.shuffle.service.enabled         | true  |
 | spark.dynamicAllocation.enabled       | true  |
 | spark.local.dir	                    | /tmp/spark |
 | spark.mesos.executor.docker.volumes	| /var/lib/tmp/spark:/tmp/spark:rw |
 
-## Spark Properties
+## Other Spark Properties
 
 Some other options are set via environment variables and can be changed as needed:
 
-| Config                                | Value |      
+| Property                              | Value |      
 | ------------------------------------- | ----- |
 | executor-memory                       | 8g    |
 | driver-memory                         | 4g    |
@@ -60,4 +59,4 @@ Here, we are using [beeline JDBC client](https://cwiki.apache.org/confluence/dis
 docker run --rm -ti --net=host --entrypoint=./beeline.sh sutoiku/beeline:hive-1.2.0 -u jdbc:hive2://spark-thriftserver.marathon.mesos:9000/default
 ```
 
-Please note that we are running in non-secure mode, and so when prompted simply enter the username on your machine and a blank password.
+**NOTE**: We are running in non-secure mode, and so when prompted simply enter the username on your machine and a blank password.
