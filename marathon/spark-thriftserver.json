@@ -8,7 +8,7 @@
   "gpus": 0,
   "env": {
     "HIVE_SERVER2_THRIFT_PORT": "9000",
-    "SPARK_EXECUTOR_DOCKER_IMAGE": "mesosphere/spark:1.0.8-2.1.0-1-hadoop-2.7",
+    "SPARK_EXECUTOR_DOCKER_IMAGE": "mesosphere/spark:1.1.1-2.2.0-hadoop-2.7",
     "SPARK_EXECUTOR_MEMORY": "8g",
     "SPARK_DRIVER_MEMORY": "4g",
     "SPARK_CORES_MAX": "160",
@@ -19,7 +19,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "mesosphere/spark:1.0.8-2.1.0-1-hadoop-2.7",
+      "image": "mesosphere/spark:1.1.1-2.2.0-hadoop-2.7",
       "network": "HOST",
       "forcePullImage": true
     },
