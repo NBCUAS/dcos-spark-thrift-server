@@ -1,6 +1,6 @@
 {
   "id": "/spark-thriftserver",
-  "cmd": "/opt/spark/dist/sbin/start-thriftserver.sh --master mesos://leader.mesos:5050 --executor-memory ${SPARK_EXECUTOR_MEMORY} --driver-memory ${SPARK_DRIVER_MEMORY} --conf spark.shuffle.service.enabled=true --conf spark.network.timeout=10s --conf spark.shuffle.io.connectionTimeout=10s --conf spark.ui.showConsoleProgress=false --conf spark.cores.max=${SPARK_CORES_MAX} --conf spark.executor.cores=${SPARK_EXECUTOR_CORES} --conf spark.mesos.extra.cores=${SPARK_MESOS_EXTRA_CORES} --conf spark.dynamicAllocation.enabled=true --conf spark.dynamicAllocation.maxExecutors=${SPARK_MAX_EXECUTORS} --conf spark.local.dir=/tmp/spark --conf spark.mesos.coarse=true --conf spark.mesos.executor.docker.volumes=/var/lib/tmp/spark:/tmp/spark:rw --conf spark.mesos.executor.docker.image=${SPARK_EXECUTOR_DOCKER_IMAGE} --conf spark.mesos.executor.docker.forcePullImage=true --conf spark.executor.home=/opt/spark/dist && find /opt/spark/dist/logs/ -name 'spark--org.apache.spark.sql.hive.thriftserver.*.out' -exec tail -f {} \\;",
+  "cmd": "/opt/spark/sbin/start-thriftserver.sh --master mesos://leader.mesos:5050 --executor-memory ${SPARK_EXECUTOR_MEMORY} --driver-memory ${SPARK_DRIVER_MEMORY} --conf spark.shuffle.service.enabled=true --conf spark.network.timeout=10s --conf spark.shuffle.io.connectionTimeout=10s --conf spark.ui.showConsoleProgress=false --conf spark.cores.max=${SPARK_CORES_MAX} --conf spark.executor.cores=${SPARK_EXECUTOR_CORES} --conf spark.mesos.extra.cores=${SPARK_MESOS_EXTRA_CORES} --conf spark.dynamicAllocation.enabled=true --conf spark.dynamicAllocation.maxExecutors=${SPARK_MAX_EXECUTORS} --conf spark.local.dir=/tmp/spark --conf spark.mesos.coarse=true --conf spark.mesos.executor.docker.volumes=/var/lib/tmp/spark:/tmp/spark:rw --conf spark.mesos.executor.docker.image=${SPARK_EXECUTOR_DOCKER_IMAGE} --conf spark.mesos.executor.docker.forcePullImage=true --conf spark.executor.home=/opt/spark/dist && find /opt/spark/dist/logs/ -name 'spark--org.apache.spark.sql.hive.thriftserver.*.out' -exec tail -f {} \\;",
   "instances": 1,
   "cpus": 1,
   "mem": 4096,
@@ -8,7 +8,7 @@
   "gpus": 0,
   "env": {
     "HIVE_SERVER2_THRIFT_PORT": "9000",
-    "SPARK_EXECUTOR_DOCKER_IMAGE": "mesosphere/spark:1.1.1-2.2.0-hadoop-2.7",
+    "SPARK_EXECUTOR_DOCKER_IMAGE": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7-scala-2.12",
     "SPARK_EXECUTOR_MEMORY": "8g",
     "SPARK_DRIVER_MEMORY": "4g",
     "SPARK_CORES_MAX": "160",
@@ -19,7 +19,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "mesosphere/spark:1.1.1-2.2.0-hadoop-2.7",
+      "image": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7-scala-2.12",
       "network": "HOST",
       "forcePullImage": true
     },
