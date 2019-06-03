@@ -8,7 +8,7 @@
   "gpus": 0,
   "env": {
     "HIVE_SERVER2_THRIFT_PORT": "9000",
-    "SPARK_EXECUTOR_DOCKER_IMAGE": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7-scala-2.12",
+    "SPARK_EXECUTOR_DOCKER_IMAGE": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7",
     "SPARK_EXECUTOR_MEMORY": "8g",
     "SPARK_DRIVER_MEMORY": "4g",
     "SPARK_CORES_MAX": "160",
@@ -19,7 +19,7 @@
   "container": {
     "type": "DOCKER",
     "docker": {
-      "image": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7-scala-2.12",
+      "image": "registry.marathon.mesos:5000/spark:2.7.0-2.4.0-hadoop-2.7",
       "network": "HOST",
       "forcePullImage": true
     },
